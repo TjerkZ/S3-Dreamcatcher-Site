@@ -1,12 +1,12 @@
 import React from "react";
 import { Navbar, Container, Nav, Button, NavDropdown} from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Dropdown } from "bootstrap";
 
 function Navigation() {
     const {
         user,
         isAuthenticated,
+        isLoading,
         loginWithRedirect,
         logout,
     } = useAuth0();
@@ -17,6 +17,10 @@ function Navigation() {
       returnTo: window.location.origin,
     });
 
+    if (isLoading) {
+        return <div></div>
+    }
+
     return (
         <Navbar bg="light" expand="lg">
             <Container>
@@ -26,10 +30,10 @@ function Navigation() {
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/profile">Profile</Nav.Link>
+                        <Nav.Link href="/dreams">Dreams</Nav.Link>
+                        <Nav.Link href="/stats">Stats</Nav.Link>
                     </Nav>
-                    {!isAuthenticated && (
-                        <Button variant="success" onClick={() => loginWithRedirect()}>Login</Button>
-                    )}
+                    
                     {isAuthenticated && (
                         <div>
                             <Nav>
@@ -39,6 +43,9 @@ function Navigation() {
                                 </NavDropdown>
                             </Nav>
                         </div>
+                    )}
+                    {!isAuthenticated && (
+                        <Button variant="success" onClick={() => loginWithRedirect()}>Login</Button>
                     )}
                 </Navbar.Collapse>
             </Container>
